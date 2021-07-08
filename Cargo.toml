@@ -1,0 +1,15 @@
+[package]
+name = "gut-jinx"
+version = "0.1.0"
+authors = ["Jared De La Cruz <jared@jareddlc.com>"]
+edition = "2018"
+
+[lib]
+name = "gut_jinx"
+crate-type = ["cdylib"]
+
+[dependencies]
+jinx-proxy = "0.1"
+gut-lib = "0.1"
+gut-plugin = "0.1"
+tokio = "1.7"

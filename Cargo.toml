@@ -13,3 +13,8 @@ jinx-proxy = "0.1"
 gut-lib = "0.1"
 gut-plugin = "0.1"
 tokio = "1.7"
+
+[profile.release]
+codegen-units = 1
+opt-level = 'z'
+lto = true

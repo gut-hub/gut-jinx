@@ -24,6 +24,8 @@ Jinx uses [letsencrypt](https://letsencrypt.org/) for certificate generation. Ji
 ### Jinx Service
 To create a Jinx Service, the file `jinx.json` must exist inside the project directory where the Dockerfile is located. It will compress the directory into a tar archive to be used with Docker's API to build the image.
 
+see [jinx-service-example](https://github.com/gut-hub/jinx-service-example)
+
 Below is an example of a jinx service:
 ```json
 {
@@ -31,7 +33,6 @@ Below is an example of a jinx service:
   "domain": "jareddlc.com",
   "image_name": "jareddlc_com",
   "image_port": 8080,
-  "image_env": [],
   "https_redirect": true,
   "https": true
 }

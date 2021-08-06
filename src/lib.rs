@@ -207,6 +207,9 @@ pub fn proxy_run() {
 }
 
 pub fn cert_generate() {
+    // create letsencrypt directories
+    jinx_proxy::cert::write_letsencrypt();
+
     // get jinx_files
     let jinx_files = jinx_proxy::file::get_jinx_files();
 
@@ -217,38 +220,15 @@ pub fn cert_generate() {
         // get docker client
         let client = jinx_proxy::docker::get_client();
 
-        // certbot server ports
-        let ports = vec!["80:80/tcp", "443:443/tcp"];
-
-        // mount volumes
-        let etc = format!("{}/letsencrypt:/etc/letsencrypt", jinx_files.jinx_home);
-        let lib = format!("{}/letsencrypt:/var/lib/letsencrypt", jinx_files.jinx_home);
-        let volumes = vec![etc.as_str(), lib.as_str()];
-
-        let domain = format!("-d {}", service.domain);
-        let www_domain = format!("-d www.{}", service.domain);
-
-        let cmds = vec![
-            "certonly",
-            "--register-unsafely-without-email",
-            "--agree-tos",
-            "--standalone",
-            domain.as_str(),
-            www_domain.as_str(),
-        ];
-
         // create docker service
         tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
             .expect("Failed to create runtime")
-            .block_on(jinx_proxy::docker::run_image(
+            .block_on(jinx_proxy::cert::run_letsencrypt_container(
                 client,
-                "certbot/certbot",
-                ports,
-                volumes,
-                None,
-                Some(cmds),
+                &jinx_files,
+                service.domain,
             ));
     }
 }

@@ -57,7 +57,7 @@ cert renew      Renews certs (proxy running)
 ```
 
 
-#### Example workflow (non https):
+#### Example workflow:
 
 ```shell
 # initialize the jinx network
@@ -78,3 +78,10 @@ $ gut jinx (services run)
 # run jinx proxy
 $ gut jinx (proxy run)
 ```
+
+To generate certificates, make sure the DNS record is pointing to the host IP.
+```shell
+$ gut jinx (cert generate)
+```
+
+this will create a `letsencrypt` directory in the `$HOME/.jinx/` directory, and will contain the certificate files.

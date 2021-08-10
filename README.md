@@ -4,9 +4,13 @@ Gut plugin for Jinx - Proxy and deploy docker containers
 Jinx is a small proxy that runs on docker swarm. It will proxy traffic to the associated jinx services.
 Jinx uses [letsencrypt](https://letsencrypt.org/) for certificate generation. Jinx configuration is located at: `$HOME/.jinx/jinx_conf.json`
 
+### Use case
+Jinx was created to have multiple services that listen on their own port be exposed to port 80,443 to the internet.
+The services must only expose 1 port and the jinx proxy will foward incoming request for that domain to the service.
+
 ```
  ┌───────────┐
- │Jinx Proxy │
+ │Jinx Proxy │ (port: 80,443)
  └─────┬─────┘
        │
        │
@@ -14,29 +18,18 @@ Jinx uses [letsencrypt](https://letsencrypt.org/) for certificate generation. Ji
        ▼
 ┌─────────────┐
 │             ├─┐
-│Jinx Services│ │
+│Jinx Services│ │ (port: 8080, 3000, etc)
 │             │ │
 └─┬───────────┘ │
   └─────────────┘
 ```
-
 
 ### Jinx Service
 To create a Jinx Service, the file `jinx.json` must exist inside the project directory where the Dockerfile is located. It will compress the directory into a tar archive to be used with Docker's API to build the image.
 
 see [jinx-service-example](https://github.com/gut-hub/jinx-service-example)
 
-Below is an example of a jinx service:
-```json
-{
-  "name": "jareddlc-com",
-  "domain": "jareddlc.com",
-  "image_name": "jareddlc_com",
-  "image_port": 8080,
-  "https_redirect": true,
-  "https": true
-}
-```
+see [jinx.json](https://github.com/jareddlc/jinx/blob/master/src/service.rs#L10) definition
 
 
 ### Jinx Proxy
